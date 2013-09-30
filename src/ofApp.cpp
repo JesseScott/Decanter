@@ -11,6 +11,19 @@ void ofApp::setup(){
     // Camera
     camWidth = 640;
     camHeight = 480;
+    vector<ofVideoDevice> devices = camera.listDevices();
+	
+    for(int i = 0; i < devices.size(); i++){
+		cout << devices[i].id << ": " << devices[i].deviceName;
+        if( devices[i].bAvailable ){
+            cout << endl;
+        }else{
+            cout << " - unavailable " << endl;
+        }
+	}
+    
+	camera.setDeviceID(4);
+	camera.setDesiredFrameRate(60);
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
 

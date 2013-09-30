@@ -20,7 +20,12 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-        // Custom
+        // Pd
         AppCore core;
-		
+    
+        // Camera
+        ofVideoGrabber  camera;
+        int camWidth, camHeight;
+    
+    
 };

@@ -3,6 +3,9 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    // Misc
+    verbose = true;
+    
     // Pd
     int ticksPerBuffer = 8;
     ofSoundStreamSetup(2, 1, 44100, ofxPd::blockSize()*ticksPerBuffer, 3);
@@ -12,16 +15,16 @@ void ofApp::setup(){
     camWidth = 640;
     camHeight = 480;
     vector<ofVideoDevice> devices = camera.listDevices();
-	
-    for(int i = 0; i < devices.size(); i++){
-		cout << devices[i].id << ": " << devices[i].deviceName;
-        if( devices[i].bAvailable ){
-            cout << endl;
-        }else{
-            cout << " - unavailable " << endl;
+	if(verbose) {
+        for(int i = 0; i < devices.size(); i++){
+            cout << devices[i].id << ": " << devices[i].deviceName;
+            if( devices[i].bAvailable ){
+                cout << endl;
+            }else{
+                cout << " - unavailable " << endl;
+            }
         }
-	}
-    
+    }
 	camera.setDeviceID(4);
 	camera.setDesiredFrameRate(60);
     camera.setVerbose(true);
@@ -48,8 +51,23 @@ void ofApp::draw(){
 }
 
 //--------------------------------------------------------------
+void ofApp::exit() {
+    
+    // Close Pd
+	core.exit();
+    
+    // Close Camera
+    camera.close();
+}
+
+//--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 
+    
+    // Camera Settings
+    if (key == 's' || key == 'S'){
+		camera.videoSettings();
+	}
 }
 
 //--------------------------------------------------------------

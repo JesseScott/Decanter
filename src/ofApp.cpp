@@ -60,35 +60,34 @@ void ofApp::update(){
         unsigned char tmpB = 0;
         unsigned char tmpC = 0;
         
-        for (int i = 0; i < totalPixels-1; i++) {
+        for (int i = 0; i < totalPixels; i++) {
+            
             // Adding Colors
-            //tmpR += pixels[i*3];
-            //tmpG += pixels[i*3+1];
-            //tmpB += pixels[i*3+2];
-            tmpC += pixels[i];
+            tmpR += pixels[i];
+            tmpG += pixels[i+1];
+            tmpB += pixels[i+2];
+            //tmpC += pixels[i];
             
             // Store Color
             if(i % camWidth == 0) {
-                // Set Avg Colours To Color Array
-                int color = int(tmpC);
                 //cout << "TEMP CEE FOR LINE #" << lineCounter << " IS " << color << endl;
-                lineColors[lineCounter].r = color;
-                lineColors[lineCounter].g = color;
-                lineColors[lineCounter].b = color;
+                
+                // Set Avg Colours To Color Array
+                lineColors[lineCounter].r = int(tmpR);
+                lineColors[lineCounter].g = int(tmpG);
+                lineColors[lineCounter].b = int(tmpB);
                 
                 // Reset Temp Colors
-                //tmpR = 0;
-                //tmpG = 0;
-                //tmpB = 0;
-                tmpC = 0;
+                tmpR = 0;
+                tmpG = 0;
+                tmpB = 0;
+                //tmpC = 0;
                 
                 // Iterate
                 lineCounter++;
                 
             }
         }
-        
-        
 	}
     
 }
@@ -97,18 +96,19 @@ void ofApp::update(){
 void ofApp::draw(){
     
     // Raw Camera
+    ofSetColor(255);
     camera.draw(50, 50, camWidth, camHeight);
     
     // Lines
     for (int i = 0; i < camHeight; i++) {
         ofSetColor(lineColors[i]);
-        cout << lineColors[i] << endl;
+        //cout << lineColors[i] << endl;
         ofLine(camWidth + 100, 50 + i, camWidth*2 + 100, 50 + i);
     }
     
     
     // Debug
-    ofSetColor(255);
+    ofSetColor(0);
     char fpsStr[255];
     sprintf(fpsStr, "frame rate: %f", ofGetFrameRate());
     ofDrawBitmapString(fpsStr, 50, 700);

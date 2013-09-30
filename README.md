@@ -10,3 +10,5 @@ Made with openFrameworks (http://www.openframeworks.cc/) and Pure Data (http://p
 and using the ofxPd addon (https://github.com/danomatika/ofxPd)
 
 Presented at VIVO (http://www.vivomediaarts.com/), Oct 25th, 2013.
+
+Made by Jesse Scott & Leo Stefansson

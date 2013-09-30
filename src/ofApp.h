@@ -36,6 +36,9 @@ class ofApp : public ofBaseApp{
         ofColor lineColors[480];
         ofColor tempColor;
     
+        unsigned char * 	videoInverted;
+        ofTexture			videoTexture;
+    
         // Font
         ofTrueTypeFont font;
     

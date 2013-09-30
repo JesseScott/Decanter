@@ -41,6 +41,9 @@ void ofApp::setup(){
 	camera.setDesiredFrameRate(60);
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
+    
+    videoInverted 	= new unsigned char[camWidth*camHeight*3];
+	videoTexture.allocate(camWidth,camHeight, GL_RGB);
 
     cout << " -- END OF SETUP -- " << endl;
 }
@@ -53,7 +56,7 @@ void ofApp::update(){
     if (camera.isFrameNew()){
         
         pixels = camera.getPixels();
-        int totalPixels = camWidth * camHeight;
+        int totalPixels = camWidth * camHeight *3;
         lineCounter = 0;
         unsigned char tmpR = 0;
         unsigned char tmpG = 0;
@@ -61,6 +64,8 @@ void ofApp::update(){
         unsigned char tmpC = 0;
         
         for (int i = 0; i < totalPixels; i++) {
+            
+            videoInverted[i] = 255 - pixels[i];
             
             // Adding Colors
             tmpR += pixels[i];
@@ -88,6 +93,7 @@ void ofApp::update(){
                 
             }
         }
+        videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
 	}
     
 }
@@ -98,6 +104,7 @@ void ofApp::draw(){
     // Raw Camera
     ofSetColor(255);
     camera.draw(50, 50, camWidth, camHeight);
+    videoTexture.draw(50 ,camHeight + 50, camWidth, camHeight);
     
     // Lines
     for (int i = 0; i < camHeight; i++) {
@@ -105,6 +112,8 @@ void ofApp::draw(){
         //cout << lineColors[i] << endl;
         ofLine(camWidth + 100, 50 + i, camWidth*2 + 100, 50 + i);
     }
+    
+    
     
     
     // Debug

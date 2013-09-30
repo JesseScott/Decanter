@@ -68,25 +68,7 @@ void ofApp::update(){
         g = g / count;
         b = b / count;
         cout << "FINAL    R : " << r << " G : " << g << " B : " << b << endl;
-        
-        /*
-        int totalPixels = camWidth*camHeight*3;
-        unsigned char *pixels = camera.getPixels();
-        for (int i = 0; i < totalPixels-1; i++) {
-            
-            r += pixels[i * 3];
-            g += pixels[i * 3 + 1];
-            b += pixels[i * 3 + 2];
-            
-        }
-        cout << "PRE    R : " << r << " G : " << g << " B : " << b << endl;
-        r = r / totalPixels;
-        g = g / totalPixels;
-        b = b / totalPixels;
-        cout << "TL : " << totalPixels << endl;
-        cout << "FINAL    R : " << r << " G : " << g << " B : " << b << endl;
-        */
-        
+               
 	}
     
     ofBackground(r,g,b);

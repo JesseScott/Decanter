@@ -20,6 +20,12 @@ void ofApp::setup(){
     // Camera
     camWidth = 640;
     camHeight = 480;
+    lineCounter = 0;
+    tmpR = 0;
+    tmpG = 0;
+    tmpB = 0;
+    tmpC = 0;
+    
     vector<ofVideoDevice> devices = camera.listDevices();
 	if(verbose) {
         for(int i = 0; i < devices.size(); i++){
@@ -44,34 +50,47 @@ void ofApp::update(){
 
     // Camera
     camera.update();
-    int r = 0; int g = 0; int b = 0; int a = 0;
-
     if (camera.isFrameNew()){
         
-        ofPixels pixels = camera.getPixelsRef();
-        int count = 0;
+        pixels = camera.getPixels();
+        int totalPixels = camWidth * camHeight;
+        lineCounter = 0;
+        unsigned char tmpR = 0;
+        unsigned char tmpG = 0;
+        unsigned char tmpB = 0;
+        unsigned char tmpC = 0;
         
-        for(int x = 0; x < pixels.getWidth(); x += 4) {
-            for(int y = 0; y < pixels.getHeight(); y += 4) {
-                ofColor c = pixels.getColor(x, y);
-                r += c.r;
-                g += c.g;
-                b += c.b;
-                a += c.a;
-                count++;
+        for (int i = 0; i < totalPixels-1; i++) {
+            // Adding Colors
+            //tmpR += pixels[i*3];
+            //tmpG += pixels[i*3+1];
+            //tmpB += pixels[i*3+2];
+            tmpC += pixels[i];
+            
+            // Store Color
+            if(i % camWidth == 0) {
+                // Set Avg Colours To Color Array
+                int color = int(tmpC);
+                //cout << "TEMP CEE FOR LINE #" << lineCounter << " IS " << color << endl;
+                lineColors[lineCounter].r = color;
+                lineColors[lineCounter].g = color;
+                lineColors[lineCounter].b = color;
+                
+                // Reset Temp Colors
+                //tmpR = 0;
+                //tmpG = 0;
+                //tmpB = 0;
+                tmpC = 0;
+                
+                // Iterate
+                lineCounter++;
+                
             }
         }
         
-        cout << "PRE    R : " << r << " G : " << g << " B : " << b << endl;
-        int totalPixels = camWidth * camHeight;
-        r = r / count;
-        g = g / count;
-        b = b / count;
-        cout << "FINAL    R : " << r << " G : " << g << " B : " << b << endl;
-               
+        
 	}
     
-    ofBackground(r,g,b);
 }
 
 //--------------------------------------------------------------
@@ -80,11 +99,19 @@ void ofApp::draw(){
     // Raw Camera
     camera.draw(50, 50, camWidth, camHeight);
     
+    // Lines
+    for (int i = 0; i < camHeight; i++) {
+        ofSetColor(lineColors[i]);
+        cout << lineColors[i] << endl;
+        ofLine(camWidth + 100, 50 + i, camWidth*2 + 100, 50 + i);
+    }
+    
+    
     // Debug
     ofSetColor(255);
     char fpsStr[255];
     sprintf(fpsStr, "frame rate: %f", ofGetFrameRate());
-    font.drawString(fpsStr, 50, 700);
+    ofDrawBitmapString(fpsStr, 50, 700);
 
 }
 

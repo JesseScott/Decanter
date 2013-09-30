@@ -27,6 +27,14 @@ class ofApp : public ofBaseApp{
         // Camera
         ofVideoGrabber  camera;
         int camWidth, camHeight;
+        unsigned char *pixels;
+        unsigned char tmpR;
+        unsigned char tmpG;
+        unsigned char tmpB;
+        unsigned char tmpC;
+        int lineCounter;
+        ofColor lineColors[480];
+        ofColor tempColor;
     
         // Font
         ofTrueTypeFont font;

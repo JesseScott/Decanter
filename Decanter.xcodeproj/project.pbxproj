@@ -23,6 +23,7 @@
 		21DE514257119B92345B0900 /* g_graph.c in Sources */ = {isa = PBXBuildFile; fileRef = A2BDF137E2A9EFF3694B25B4 /* g_graph.c */; };
 		250A95BA26587BE85DB0A353 /* ofxCvColorImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE9C7160245B19131DAE6128 /* ofxCvColorImage.cpp */; };
 		2687B1C07A10EEAD7689CF27 /* x_misc.c in Sources */ = {isa = PBXBuildFile; fileRef = 9C69DFEE749ABBCA5CBAB764 /* x_misc.c */; };
+		2DE8331217F9086A0006699B /* AppCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8331017F9086A0006699B /* AppCore.cpp */; };
 		2DF23C94600F317B51401032 /* d_ctl.c in Sources */ = {isa = PBXBuildFile; fileRef = 674D3AA2CD9DDA6D5EFF577B /* d_ctl.c */; };
 		2F8CA89860CCE631A1295C9C /* d_fftroutine.c in Sources */ = {isa = PBXBuildFile; fileRef = A72439B13E0F7E5DD857AE4A /* d_fftroutine.c */; };
 		36F094871BCE984210F47203 /* pique.c in Sources */ = {isa = PBXBuildFile; fileRef = F7726CE92BC0F833C7140039 /* pique.c */; };
@@ -191,6 +192,12 @@
 		2BFCC35A339F99DA2DD9A047 /* s_path.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = s_path.c; path = "../../../addons/ofxPd/libs/libpd/pure-data/src/s_path.c"; sourceTree = SOURCE_ROOT; };
 		2D1B8CC8F777532E991B7952 /* g_editor.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = g_editor.c; path = "../../../addons/ofxPd/libs/libpd/pure-data/src/g_editor.c"; sourceTree = SOURCE_ROOT; };
 		2DE0F5ADBE3BC1C764445E92 /* d_soundfile.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = d_soundfile.c; path = "../../../addons/ofxPd/libs/libpd/pure-data/src/d_soundfile.c"; sourceTree = SOURCE_ROOT; };
+		2DE8331017F9086A0006699B /* AppCore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppCore.cpp; sourceTree = "<group>"; };
+		2DE8331117F9086A0006699B /* AppCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCore.h; sourceTree = "<group>"; };
+		2DE8331417F908760006699B /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		2DE8331717F908760006699B /* test_abs.pd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test_abs.pd; sourceTree = "<group>"; };
+		2DE8331817F908760006699B /* instance.pd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = instance.pd; sourceTree = "<group>"; };
+		2DE8331917F908760006699B /* test.pd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test.pd; sourceTree = "<group>"; };
 		2E411F99E3AB7154484B4F96 /* kmeans_index.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = kmeans_index.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/kmeans_index.h; sourceTree = SOURCE_ROOT; };
 		2EE5752FE9F3922F36D2C46B /* x_acoustics.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = x_acoustics.c; path = "../../../addons/ofxPd/libs/libpd/pure-data/src/x_acoustics.c"; sourceTree = SOURCE_ROOT; };
 		2FE1CE2510D6011389D5961F /* m_pd.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = m_pd.c; path = "../../../addons/ofxPd/libs/libpd/pure-data/src/m_pd.c"; sourceTree = SOURCE_ROOT; };
@@ -551,6 +558,34 @@
 				9ADFF3120BFC453FCBCBC5DA /* pure-data */,
 			);
 			name = libpd;
+			sourceTree = "<group>";
+		};
+		2DE8331317F908760006699B /* data */ = {
+			isa = PBXGroup;
+			children = (
+				2DE8331417F908760006699B /* .gitkeep */,
+				2DE8331517F908760006699B /* pd */,
+			);
+			name = data;
+			path = bin/data;
+			sourceTree = "<group>";
+		};
+		2DE8331517F908760006699B /* pd */ = {
+			isa = PBXGroup;
+			children = (
+				2DE8331617F908760006699B /* abs */,
+				2DE8331817F908760006699B /* instance.pd */,
+				2DE8331917F908760006699B /* test.pd */,
+			);
+			path = pd;
+			sourceTree = "<group>";
+		};
+		2DE8331617F908760006699B /* abs */ = {
+			isa = PBXGroup;
+			children = (
+				2DE8331717F908760006699B /* test_abs.pd */,
+			);
+			path = abs;
 			sourceTree = "<group>";
 		};
 		33CBE85818AD7949E9BCB676 /* util */ = {
@@ -1023,9 +1058,10 @@
 			children = (
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
+				2DE8331317F908760006699B /* data */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
-				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
+				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
 				E4B69B5B0A3A1756003C02F2 /* DecanterDebug.app */,
 			);
@@ -1034,6 +1070,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				2DE8331017F9086A0006699B /* AppCore.cpp */,
+				2DE8331117F9086A0006699B /* AppCore.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
@@ -1247,6 +1285,7 @@
 				F8AF00EAEC60DB3BA134C090 /* x_net.c in Sources */,
 				8CDFAC966082DF2503373798 /* x_qlist.c in Sources */,
 				1C52472095475952DF505D99 /* x_time.c in Sources */,
+				2DE8331217F9086A0006699B /* AppCore.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

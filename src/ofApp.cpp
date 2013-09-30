@@ -3,6 +3,12 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    // Screen
+    ofBackground(255);
+    
+    // Font
+    font.loadFont("font/Courier New Bold.ttf", 9);
+    
     // Misc
     verbose = true;
     
@@ -30,6 +36,7 @@ void ofApp::setup(){
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
 
+    cout << " -- END OF SETUP -- " << endl;
 }
 
 //--------------------------------------------------------------
@@ -52,6 +59,7 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::exit() {
+    ofLogNotice("Exiting App");
     
     // Close Pd
 	core.exit();

@@ -28,6 +28,9 @@ class ofApp : public ofBaseApp{
         ofVideoGrabber  camera;
         int camWidth, camHeight;
     
+        // Font
+        ofTrueTypeFont font;
+    
         // Misc
         Boolean verbose;
     

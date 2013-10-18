@@ -65,25 +65,22 @@ void ofApp::update(){
         int tempCounter = 0;
         
         for (int i = 0; i < totalPixels; i++) {
-            
-            //  videoInverted[i] = 255 - pixels[i];
-            
+                    
             // Adding Colors
             tmpR += pixels[i*3];
             tmpG += pixels[i*3+1];
             tmpB += pixels[i*3+2];
             //tmpC += pixels[i];
+            
             tempCounter++;
+            
             // Store Color
             if(i % camWidth == 0) {
                 // get the average value
-                
-                ofLogNotice(ofToString(totalPixels));
-                ofLogNotice(ofToString(tmpR));
                 tmpR = tmpR/camWidth;
                 tmpG = tmpG/camWidth;
                 tmpB = tmpB/camWidth;
-                ofLogNotice("tempR = " + ofToString(tmpR));
+
                 // Set Avg Colours To Color Array
                 lineColors[lineCounter].r = int(tmpR);
                 lineColors[lineCounter].g = int(tmpG);
@@ -99,7 +96,6 @@ void ofApp::update(){
                 
             }
         }
-        // videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
 	}
     
 }
@@ -110,7 +106,6 @@ void ofApp::draw(){
     // Raw Camera
     ofSetColor(255);
     camera.draw(50, 50, camWidth, camHeight);
-    // videoTexture.draw(50 ,camHeight + 50, camWidth, camHeight);
     
     // Lines
     for (int i = 0; i < camHeight; i++) {

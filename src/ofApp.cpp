@@ -47,7 +47,14 @@ void ofApp::setup(){
     
     // FBOs
     averageColours.allocate(camWidth, camHeight, GL_RGBA);
+    averageColours.begin();
+        ofClear(255,255,255, 0);
+    averageColours.end();
+    
     blockColours.allocate(camWidth, camHeight, GL_RGBA);
+    blockColours.begin();
+        ofClear(255,255,255, 0);
+    blockColours.end();
     
     cout << " -- END OF SETUP -- " << endl;
 }
@@ -97,6 +104,15 @@ void ofApp::update(){
                 
             }
         }
+        
+        // Draw FBOs
+        averageColours.begin();
+            for (int i = 0; i < camHeight; i++) {
+                ofSetColor(lineColors[i]);
+                ofLine(0, 0 + i, camWidth, 0 + i);
+            }
+        averageColours.end();
+        
 	}
     
 }
@@ -109,11 +125,9 @@ void ofApp::draw(){
     ofSetColor(255);
     camera.draw(0, 0, camWidth, camHeight);
     
-    // Lines
-    for (int i = 0; i < camHeight; i++) {
-        ofSetColor(lineColors[i]);
-        ofLine(camWidth + 0, 0 + i, camWidth * 2 + 0, 0 + i);
-    }
+    // Average Colour Lines
+    ofSetColor(255);
+    averageColours.draw(camWidth, 0);
     
     // Debug
     ofSetColor(0);

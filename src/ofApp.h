@@ -31,14 +31,14 @@ class ofApp : public ofBaseApp{
         int tmpR;
         int tmpG;
         int tmpB;
-        int tmpC;
         int lineCounter;
         ofColor lineColors[480];
+        ofColor blockColors[48];
         ofColor tempColor;
     
         // FBOs
-        ofFbo   averageColours;
-        ofFbo   blockColours;
+        ofFbo   averageLines;
+        ofFbo   averageBlocks;
     
         // Font
         ofTrueTypeFont font;

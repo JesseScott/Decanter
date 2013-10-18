@@ -26,7 +26,6 @@ void ofApp::setup(){
     tmpR = 0;
     tmpG = 0;
     tmpB = 0;
-    tmpC = 0;
     
     vector<ofVideoDevice> devices = camera.listDevices();
     if(verbose) {
@@ -46,15 +45,15 @@ void ofApp::setup(){
     camera.initGrabber(camWidth, camHeight);
     
     // FBOs
-    averageColours.allocate(camWidth, camHeight, GL_RGBA);
-    averageColours.begin();
+    averageLines.allocate(camWidth, camHeight, GL_RGBA);
+    averageLines.begin();
         ofClear(255,255,255, 0);
-    averageColours.end();
+    averageLines.end();
     
-    blockColours.allocate(camWidth, camHeight, GL_RGBA);
-    blockColours.begin();
+    averageBlocks.allocate(camWidth, camHeight, GL_RGBA);
+    averageBlocks.begin();
         ofClear(255,255,255, 0);
-    blockColours.end();
+    averageBlocks.end();
     
     cout << " -- END OF SETUP -- " << endl;
 }
@@ -72,27 +71,37 @@ void ofApp::update(){
         lineCounter = 0;
         int tempCounter = 0;
         
+        // Get Average Colours
         for (int i = 0; i < totalPixels; i++) {
-                    
             // Adding Colors
             tmpR += pixels[i*3];
             tmpG += pixels[i*3+1];
             tmpB += pixels[i*3+2];
-            //tmpC += pixels[i];
-            
             tempCounter++;
             
             // Store Color
             if(i % camWidth == 0) {
                 // get the average value
-                tmpR = tmpR/camWidth;
-                tmpG = tmpG/camWidth;
-                tmpB = tmpB/camWidth;
+                tmpR = tmpR / camWidth;
+                tmpG = tmpG / camWidth;
+                tmpB = tmpB / camWidth;
 
                 // Set Avg Colours To Color Array
-                lineColors[lineCounter].r = int(tmpR);
-                lineColors[lineCounter].g = int(tmpG);
-                lineColors[lineCounter].b = int(tmpB);
+                lineColors[lineCounter].r = tmpR;
+                lineColors[lineCounter].g = tmpG;
+                lineColors[lineCounter].b = tmpB;
+                
+                // Add Averages
+                tmpR += tmpR;
+                tmpG += tmpG;
+                tmpB += tmpB;
+                
+                // Set Block Averages
+                if(lineCounter % 10 == 0) {
+                    blockColors[lineCounter/10].r = tmpR;
+                    blockColors[lineCounter/10].g = tmpG;
+                    blockColors[lineCounter/10].b = tmpB;
+                }
                 
                 // Reset Temp Colors
                 tmpR = 0;
@@ -101,17 +110,23 @@ void ofApp::update(){
                 
                 // Iterate
                 lineCounter++;
-                
             }
         }
         
         // Draw FBOs
-        averageColours.begin();
-            for (int i = 0; i < camHeight; i++) {
+        averageLines.begin();
+            for(int i = 0; i < camHeight; i++) {
                 ofSetColor(lineColors[i]);
                 ofLine(0, 0 + i, camWidth, 0 + i);
             }
-        averageColours.end();
+        averageLines.end();
+        
+        averageBlocks.begin();
+            for(int i = 0; i < camHeight/10; i++) {
+                ofSetColor(blockColors[i]);
+                ofRect(0, 0 + i*10, camWidth, 0 + i*10);
+            }
+        averageBlocks.end();
         
 	}
     
@@ -127,7 +142,11 @@ void ofApp::draw(){
     
     // Average Colour Lines
     ofSetColor(255);
-    averageColours.draw(camWidth, 0);
+    averageLines.draw(camWidth, 0, camWidth, camHeight);
+
+    // Block Colour Lines
+    ofSetColor(255);
+    averageBlocks.draw(camWidth*2, 0, camWidth, camHeight);
     
     // Debug
     ofSetColor(0);

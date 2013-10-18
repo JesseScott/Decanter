@@ -22,6 +22,7 @@ void ofApp::setup(){
     camWidth = 640;
     camHeight = 480;
     lineCounter = 0;
+    
     tmpR = 0;
     tmpG = 0;
     tmpB = 0;
@@ -62,10 +63,6 @@ void ofApp::update(){
         pixels = camera.getPixels();
         int totalPixels = camWidth * camHeight;
         lineCounter = 0;
-        int tmpR = 0;
-        int tmpG = 0;
-        int tmpB = 0;
-        
         int tempCounter = 0;
         
         for (int i = 0; i < totalPixels; i++) {

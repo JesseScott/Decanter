@@ -28,10 +28,10 @@ class ofApp : public ofBaseApp{
         ofVideoGrabber  camera;
         int camWidth, camHeight;
         unsigned char *pixels;
-        unsigned char tmpR;
-        unsigned char tmpG;
-        unsigned char tmpB;
-        unsigned char tmpC;
+        int tmpR;
+        int tmpG;
+        int tmpB;
+        int tmpC;
         int lineCounter;
         ofColor lineColors[480];
         ofColor tempColor;

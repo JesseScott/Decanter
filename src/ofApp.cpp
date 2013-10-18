@@ -26,18 +26,18 @@ void ofApp::setup(){
     tmpB = 0;
     tmpC = 0;
     
-    /*  vector<ofVideoDevice> devices = camera.listDevices();
-     if(verbose) {
-     for(int i = 0; i < devices.size(); i++){
-     cout << devices[i].id << ": " << devices[i].deviceName;
-     if( devices[i].bAvailable ){
-     cout << endl;
-     }else{
-     cout << " - unavailable " << endl;
-     }
-     }
-     }*/
-	camera.setDeviceID(0);
+    vector<ofVideoDevice> devices = camera.listDevices();
+    if(verbose) {
+        for(int i = 0; i < devices.size(); i++){
+            cout << devices[i].id << ": " << devices[i].deviceName;
+            if( devices[i].bAvailable ){
+                cout << endl;
+            }else{
+                cout << " - unavailable " << endl;
+            }
+        }
+    }
+    
 	camera.setDeviceID(4);
 	camera.setDesiredFrameRate(60);
     camera.setVerbose(true);

@@ -1,6 +1,7 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
+
 void ofApp::setup(){
     
     // Screen
@@ -43,13 +44,15 @@ void ofApp::setup(){
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
     
-    videoInverted 	= new unsigned char[camWidth*camHeight*3];
-	videoTexture.allocate(camWidth,camHeight, GL_RGB);
+    // FBOs
+    averageColours.allocate(camWidth, camHeight);
+    blockColours.allocate(camWidth, camHeight);
     
     cout << " -- END OF SETUP -- " << endl;
 }
 
 //--------------------------------------------------------------
+
 void ofApp::update(){
     
     // Camera
@@ -102,31 +105,29 @@ void ofApp::update(){
 }
 
 //--------------------------------------------------------------
+
 void ofApp::draw(){
     
     // Raw Camera
     ofSetColor(255);
-    camera.draw(50, 50, camWidth, camHeight);
+    camera.draw(0, 0, camWidth, camHeight);
     
     // Lines
     for (int i = 0; i < camHeight; i++) {
         ofSetColor(lineColors[i]);
-        //cout << lineColors[i] << endl;
-        ofLine(camWidth + 100, 50 + i, camWidth*2 + 100, 50 + i);
+        ofLine(camWidth + 0, 0 + i, camWidth * 2 + 0, 0 + i);
     }
-    
-    
-    
     
     // Debug
     ofSetColor(0);
     char fpsStr[255];
     sprintf(fpsStr, "frame rate: %f", ofGetFrameRate());
-    ofDrawBitmapString(fpsStr, 50, 700);
+    ofDrawBitmapString(fpsStr, 50, ofGetWindowHeight() - 50);
     
 }
 
 //--------------------------------------------------------------
+
 void ofApp::exit() {
     ofLogNotice("Exiting App");
     
@@ -138,51 +139,60 @@ void ofApp::exit() {
 }
 
 //--------------------------------------------------------------
+
 void ofApp::keyPressed(int key){
-    
     
     // Camera Settings
     if (key == 's' || key == 'S'){
 		camera.videoSettings();
 	}
+    
 }
 
 //--------------------------------------------------------------
+
 void ofApp::keyReleased(int key){
     
 }
 
 //--------------------------------------------------------------
+
 void ofApp::mouseMoved(int x, int y ){
     
 }
 
 //--------------------------------------------------------------
+
 void ofApp::mouseDragged(int x, int y, int button){
     
 }
 
 //--------------------------------------------------------------
+
 void ofApp::mousePressed(int x, int y, int button){
     
 }
 
 //--------------------------------------------------------------
+
 void ofApp::mouseReleased(int x, int y, int button){
     
 }
 
 //--------------------------------------------------------------
+
 void ofApp::windowResized(int w, int h){
     
 }
 
 //--------------------------------------------------------------
+
 void ofApp::gotMessage(ofMessage msg){
     
 }
 
 //--------------------------------------------------------------
+
 void ofApp::dragEvent(ofDragInfo dragInfo){
     
 }

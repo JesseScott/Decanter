@@ -36,6 +36,10 @@ class ofApp : public ofBaseApp{
         ofColor lineColors[480];
         ofColor tempColor;
     
+        // FBOs
+        ofFbo   averageColours;
+        ofFbo   blockColours;
+    
         // Font
         ofTrueTypeFont font;
     

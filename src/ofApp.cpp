@@ -46,8 +46,8 @@ void ofApp::setup(){
     camera.initGrabber(camWidth, camHeight);
     
     // FBOs
-    averageColours.allocate(camWidth, camHeight);
-    blockColours.allocate(camWidth, camHeight);
+    averageColours.allocate(camWidth, camHeight, GL_RGBA);
+    blockColours.allocate(camWidth, camHeight, GL_RGBA);
     
     cout << " -- END OF SETUP -- " << endl;
 }

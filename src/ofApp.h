@@ -20,23 +20,9 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-        void audioIn(float * input, int bufferSize, int nChannels);
     
         // Pd
         AppCore core;
-    
-        // Audio
-        vector <float> left;
-        vector <float> right;
-        vector <float> volHistory;
-        
-        int 	bufferCounter;
-        int 	drawCounter;
-        
-        float smoothedVol;
-        float scaledVol;
-        
-        ofSoundStream soundStream;
     
         // Camera
         ofVideoGrabber  camera;

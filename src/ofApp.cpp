@@ -26,6 +26,8 @@ void ofApp::setup(){
     tmpR = 0;
     tmpG = 0;
     tmpB = 0;
+    colorDifference = 25;
+    tempColor = 0;
     
     vector<ofVideoDevice> devices = camera.listDevices();
     if(verbose) {
@@ -91,6 +93,7 @@ void ofApp::update(){
                 lineColors[lineCounter].g = tmpG;
                 lineColors[lineCounter].b = tmpB;
                 
+                
                 // Add Averages
                 tmpR += tmpR;
                 tmpG += tmpG;
@@ -102,6 +105,15 @@ void ofApp::update(){
                     blockColors[lineCounter/10].g = tmpG;
                     blockColors[lineCounter/10].b = tmpB;
                 }
+                 
+                
+                // Test Colour Difference
+                
+                
+                
+                
+                // Set Temp Color
+                //tempColor = (tmpR + tmpG + tmpB) / 3;
                 
                 // Reset Temp Colors
                 tmpR = 0;
@@ -122,10 +134,12 @@ void ofApp::update(){
         averageLines.end();
         
         averageBlocks.begin();
+        
             for(int i = 0; i < camHeight/10; i++) {
                 ofSetColor(blockColors[i]);
                 ofRect(0, 0 + i*10, camWidth, 0 + i*10);
             }
+        
         averageBlocks.end();
         
 	}
@@ -147,7 +161,7 @@ void ofApp::draw(){
     // Block Colour Lines
     ofSetColor(255);
     averageBlocks.draw(camWidth*2, 0, camWidth, camHeight);
-        
+    
     // Debug
     ofSetColor(0);
     char fpsStr[255];
@@ -174,7 +188,8 @@ void ofApp::keyPressed(int key){
     
     // Camera Settings
     if (key == 's' || key == 'S'){
-		camera.videoSettings();
+		//camera.videoSettings();
+        ofSaveFrame();
 	}
     
 }

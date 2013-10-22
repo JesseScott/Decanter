@@ -28,13 +28,16 @@ class ofApp : public ofBaseApp{
         ofVideoGrabber  camera;
         int camWidth, camHeight;
         unsigned char *pixels;
+    
+        // Colour
         int tmpR;
         int tmpG;
         int tmpB;
         int lineCounter;
         ofColor lineColors[480];
         ofColor blockColors[48];
-        ofColor tempColor;
+        int tempColor, currentColor, lastColor;
+        int colorDifference;
     
         // FBOs
         ofFbo   averageLines;

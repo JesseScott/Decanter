@@ -28,6 +28,11 @@ void ofApp::setup(){
     tmpB = 0;
     colorDifference = 25;
     tempColor = 0;
+    currentColor = 0;
+    currentColorInt[0] = 0; currentColorInt[1] = 0; currentColorInt[2] = 0;
+    lastColorInt[0] = 0; lastColorInt[1] = 0; lastColorInt[2] = 0;
+    lastColor = 0;
+    
     
     vector<ofVideoDevice> devices = camera.listDevices();
     if(verbose) {
@@ -35,7 +40,8 @@ void ofApp::setup(){
             cout << devices[i].id << ": " << devices[i].deviceName;
             if( devices[i].bAvailable ){
                 cout << endl;
-            }else{
+            }
+            else {
                 cout << " - unavailable " << endl;
             }
         }
@@ -93,7 +99,6 @@ void ofApp::update(){
                 lineColors[lineCounter].g = tmpG;
                 lineColors[lineCounter].b = tmpB;
                 
-                
                 // Add Averages
                 tmpR += tmpR;
                 tmpG += tmpG;
@@ -101,19 +106,33 @@ void ofApp::update(){
                 
                 // Set Block Averages
                 if(lineCounter % 10 == 0) {
-                    blockColors[lineCounter/10].r = tmpR;
-                    blockColors[lineCounter/10].g = tmpG;
-                    blockColors[lineCounter/10].b = tmpB;
+                    //blockColors[lineCounter/10].r = tmpR;
+                    //blockColors[lineCounter/10].g = tmpG;
+                    //blockColors[lineCounter/10].b = tmpB;
+                    
+                    currentColorInt[0] = tmpR;
+                    currentColorInt[1] = tmpG;
+                    currentColorInt[2] = tmpB;
                 }
                  
-                
                 // Test Colour Difference
+                if( (currentColorInt[0] - lastColorInt[0]) < colorDifference ||
+                    (currentColorInt[1] - lastColorInt[1]) < colorDifference ||
+                    (currentColorInt[2] - lastColorInt[2]) < colorDifference ) {
+                    
+                    cout << "NEW COLOR" << endl;
+                }
+                else {
+                    cout << "OLD COLOR" << endl;
+                    //cout << "Line#" << lineCounter << endl;
+                    //cout << lastColorInt[0] << "," << lastColorInt[1] << "," << lastColorInt[2] << endl;
+                    //cout << "\n" << endl;
+                }
                 
-                
-                
-                
-                // Set Temp Color
-                //tempColor = (tmpR + tmpG + tmpB) / 3;
+                // Store Last Color
+                lastColorInt[0] = currentColorInt[0];
+                lastColorInt[1] = currentColorInt[1];
+                lastColorInt[2] = currentColorInt[2];
                 
                 // Reset Temp Colors
                 tmpR = 0;
@@ -134,12 +153,12 @@ void ofApp::update(){
         averageLines.end();
         
         averageBlocks.begin();
-        
+        /*
             for(int i = 0; i < camHeight/10; i++) {
                 ofSetColor(blockColors[i]);
                 ofRect(0, 0 + i*10, camWidth, 0 + i*10);
             }
-        
+        */
         averageBlocks.end();
         
 	}

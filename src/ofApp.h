@@ -36,7 +36,9 @@ class ofApp : public ofBaseApp{
         int lineCounter;
         ofColor lineColors[480];
         ofColor blockColors[48];
-        int tempColor, currentColor, lastColor;
+        ofColor tempColor, currentColor, lastColor;
+        int currentColorInt[3];
+        int lastColorInt[3];
         int colorDifference;
     
         // FBOs

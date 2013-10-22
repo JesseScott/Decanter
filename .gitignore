@@ -8,6 +8,11 @@
 #
 # For updates, see: http://stackoverflow.com/questions/49478/git-ignore-file-for-xcode-projects
 #########################
+
+#####
+# binary
+bin/DecanterDebug.app
+bin/Decanter.app
  
 #####
 # OS X temporary files that should never be committed

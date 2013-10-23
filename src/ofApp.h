@@ -2,6 +2,8 @@
 
 #include "ofMain.h"
 #include "AppCore.h"
+#include "ofxSyphon.h"
+
 
 class ofApp : public ofBaseApp{
 
@@ -28,6 +30,12 @@ class ofApp : public ofBaseApp{
         ofVideoGrabber  camera;
         int camWidth, camHeight;
         unsigned char *pixels;
+    
+        // Syphon
+        ofTexture tex;
+        ofxSyphonServer mainOutputSyphonServer;
+        ofxSyphonServer individualTextureSyphonServer;
+        ofxSyphonClient mClient;
     
         // Colour
         int tmpR;

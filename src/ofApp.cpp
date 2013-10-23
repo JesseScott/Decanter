@@ -2,7 +2,7 @@
 
 //--------------------------------------------------------------
 
-void ofApp::setup(){
+void ofApp::setup() {
     
     // Screen
     ofBackground(255);
@@ -47,7 +47,7 @@ void ofApp::setup(){
         }
     }
     
-	camera.setDeviceID(4);
+	camera.setDeviceID(0);
 	camera.setDesiredFrameRate(60);
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
@@ -63,12 +63,21 @@ void ofApp::setup(){
         ofClear(255,255,255, 0);
     averageBlocks.end();
     
+    // Syphon
+    ofSetWindowTitle("ofxSyphon Example");
+	mainOutputSyphonServer.setName("Screen Output");
+	individualTextureSyphonServer.setName("Texture Output");
+	mClient.setup();
+    mClient.set("","Simple Server");
+	
+    tex.allocate(camWidth, camHeight, GL_RGBA);
+    
     cout << " -- END OF SETUP -- " << endl;
 }
 
 //--------------------------------------------------------------
 
-void ofApp::update(){
+void ofApp::update() {
     
     // Camera
     camera.update();
@@ -167,7 +176,7 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 
-void ofApp::draw(){
+void ofApp::draw() {
     
     // Raw Camera
     ofSetColor(255);
@@ -180,6 +189,22 @@ void ofApp::draw(){
     // Block Colour Lines
     ofSetColor(255);
     averageBlocks.draw(camWidth*2, 0, camWidth, camHeight);
+    
+    // Texture
+    unsigned char pixels[camWidth*camHeight*4];
+    for (int i = 0; i < camWidth*camHeight*4; i++) {
+        pixels[i] = (int)(255 * ofRandomuf());
+    }
+    tex.loadData(pixels, camWidth, camHeight, GL_RGBA);
+    
+    ofSetColor(255, 255, 255);
+    ofEnableAlphaBlending();
+    tex.draw(0, camHeight);
+    
+    // Syphon
+    mClient.draw(50, 50);
+	mainOutputSyphonServer.publishScreen();
+    individualTextureSyphonServer.publishTexture(&tex);
     
     // Debug
     ofSetColor(0);

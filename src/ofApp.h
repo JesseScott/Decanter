@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "AppCore.h"
 #include "ofxSyphon.h"
 
 
@@ -22,9 +21,6 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-    
-        // Pd
-        AppCore core;
     
         // Camera
         ofVideoGrabber  camera;

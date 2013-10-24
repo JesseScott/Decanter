@@ -13,11 +13,6 @@ void ofApp::setup() {
     // Misc
     verbose = true;
     
-    // Pd
-    int ticksPerBuffer = 8;
-    ofSoundStreamSetup(2, 1, 44100, ofxPd::blockSize()*ticksPerBuffer, 3);
-    core.setup(2, 1, 44100, ticksPerBuffer);
-    
     // Camera
     camWidth = 640;
     camHeight = 480;
@@ -225,9 +220,6 @@ void ofApp::draw() {
 
 void ofApp::exit() {
     ofLogNotice("Exiting App");
-    
-    // Close Pd
-	core.exit();
     
     // Close Camera
     camera.close();

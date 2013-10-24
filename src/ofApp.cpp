@@ -22,12 +22,8 @@ void ofApp::setup() {
     tmpG = 0;
     tmpB = 0;
     colorDifference = 25;
-    tempColor = 0;
-    currentColor = 0;
     currentColorInt[0] = 0; currentColorInt[1] = 0; currentColorInt[2] = 0;
-    lastColorInt[0] = 0; lastColorInt[1] = 0; lastColorInt[2] = 0;
-    lastColor = 0;
-    
+    lastColorInt[0] = 0; lastColorInt[1] = 0; lastColorInt[2] = 0;    
     
     vector<ofVideoDevice> devices = camera.listDevices();
     if(verbose) {
@@ -46,15 +42,7 @@ void ofApp::setup() {
 	camera.setDesiredFrameRate(60);
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
-    
-    // Video Recorder
-    vidRecorder = ofPtr<ofQTKitGrabber>(new ofQTKitGrabber());
-    vidGrabber.setGrabber(vidRecorder);
-    videoDevices = vidRecorder->listVideoDevices();
-    ofAddListener(vidRecorder->videoSavedEvent, this, &ofApp::videoSaved);
-    vidGrabber.initGrabber(1920, 480);
-    vidRecorder->initRecording();
-    
+     
     // FBOs
     averageLines.allocate(camWidth, camHeight, GL_RGBA);
     averageLines.begin();
@@ -169,9 +157,6 @@ void ofApp::update() {
         
 	}
     
-    // Video Recorder
-    vidGrabber.update();
-    
 }
 
 //--------------------------------------------------------------
@@ -225,16 +210,6 @@ void ofApp::exit() {
     camera.close();
 }
 
-//--------------------------------------------------------------
-
-void ofApp::videoSaved(ofVideoSavedEventArgs& e){
-	if(e.error.empty()){
-        ofLogError("videoSavedEvent") << "Video save success: " << e.error;
-	}
-	else {
-		ofLogError("videoSavedEvent") << "Video save error: " << e.error;
-	}
-}
 
 //--------------------------------------------------------------
 
@@ -245,16 +220,6 @@ void ofApp::keyPressed(int key){
 		//camera.videoSettings();
         ofSaveFrame();
 	}
-    
-    // Video Recorder
-    if(key == ' ') {
-        if(vidRecorder->isRecording()){
-            vidRecorder->stopRecording();
-        }
-        else {
-	        vidRecorder->startRecording("MyMovieFile.mov");
-        }
-    }
     
 }
 

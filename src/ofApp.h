@@ -31,6 +31,15 @@ class ofApp : public ofBaseApp{
         int camWidth, camHeight;
         unsigned char *pixels;
     
+        // Video Recorder
+        ofVideoGrabber 			vidGrabber;
+        ofPtr<ofQTKitGrabber>	vidRecorder;
+        void videoSaved(ofVideoSavedEventArgs& e);
+        vector<string> videoDevices;
+        vector<string> audioDevices;
+        
+        bool bLaunchInQuicktime;
+    
         // Syphon
         ofTexture tex;
         ofxSyphonServer mainOutputSyphonServer;

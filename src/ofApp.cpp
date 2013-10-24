@@ -52,6 +52,14 @@ void ofApp::setup() {
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
     
+    // Video Recorder
+    vidRecorder = ofPtr<ofQTKitGrabber>(new ofQTKitGrabber());
+    vidGrabber.setGrabber(vidRecorder);
+    videoDevices = vidRecorder->listVideoDevices();
+    ofAddListener(vidRecorder->videoSavedEvent, this, &ofApp::videoSaved);
+    vidGrabber.initGrabber(1920, 480);
+    vidRecorder->initRecording();
+    
     // FBOs
     averageLines.allocate(camWidth, camHeight, GL_RGBA);
     averageLines.begin();
@@ -64,7 +72,7 @@ void ofApp::setup() {
     averageBlocks.end();
     
     // Syphon
-    ofSetWindowTitle("ofxSyphon Example");
+    ofSetWindowTitle("Decanter");
 	mainOutputSyphonServer.setName("Screen Output");
 	individualTextureSyphonServer.setName("Texture Output");
 	mClient.setup();
@@ -129,13 +137,9 @@ void ofApp::update() {
                     (currentColorInt[1] - lastColorInt[1]) < colorDifference ||
                     (currentColorInt[2] - lastColorInt[2]) < colorDifference ) {
                     
-                    //cout << "NEW COLOR" << endl;
                 }
                 else {
-                    //cout << "OLD COLOR" << endl;
-                    //cout << "Line#" << lineCounter << endl;
-                    //cout << lastColorInt[0] << "," << lastColorInt[1] << "," << lastColorInt[2] << endl;
-                    //cout << "\n" << endl;
+                
                 }
                 
                 // Store Last Color
@@ -169,6 +173,9 @@ void ofApp::update() {
         averageBlocks.end();
         
 	}
+    
+    // Video Recorder
+    vidGrabber.update();
     
 }
 
@@ -228,13 +235,34 @@ void ofApp::exit() {
 
 //--------------------------------------------------------------
 
+void ofApp::videoSaved(ofVideoSavedEventArgs& e){
+	if(e.error.empty()){
+        ofLogError("videoSavedEvent") << "Video save success: " << e.error;
+	}
+	else {
+		ofLogError("videoSavedEvent") << "Video save error: " << e.error;
+	}
+}
+
+//--------------------------------------------------------------
+
 void ofApp::keyPressed(int key){
     
     // Camera Settings
-    if (key == 's' || key == 'S'){
+    if (key == 's' || key == 'S') {
 		//camera.videoSettings();
         ofSaveFrame();
 	}
+    
+    // Video Recorder
+    if(key == ' ') {
+        if(vidRecorder->isRecording()){
+            vidRecorder->stopRecording();
+        }
+        else {
+	        vidRecorder->startRecording("MyMovieFile.mov");
+        }
+    }
     
 }
 

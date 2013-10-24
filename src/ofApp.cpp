@@ -78,9 +78,6 @@ void ofApp::update() {
     camera.update();
     if (camera.isFrameNew()){
         
-        //croppedCamera.setFromPixels(camera.getPixelsRef());
-        //croppedCamera.resize(camWidth/2, camHeight);
-        
         pixels = camera.getPixels();
         int totalPixels = camWidth * camHeight;
         lineCounter = 0;
@@ -101,9 +98,9 @@ void ofApp::update() {
             
             // Adding Colors
             if(startAdding) {
-                tmpR += pixels[0+i*3];
-                tmpG += pixels[0+i*3+1];
-                tmpB += pixels[0+i*3+2];
+                tmpR += pixels[i*3];
+                tmpG += pixels[i*3+1];
+                tmpB += pixels[i*3+2];
             }
             
             // Store Color

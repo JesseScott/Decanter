@@ -26,6 +26,9 @@ class ofApp : public ofBaseApp{
         ofVideoGrabber  camera;
         int camWidth, camHeight;
         unsigned char *pixels;
+        int cropWidth;
+        int cropOffset;
+        ofImage croppedCamera;
     
         // Syphon
         ofTexture tex;

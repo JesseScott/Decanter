@@ -16,6 +16,8 @@ void ofApp::setup() {
     // Camera
     camWidth = 640;
     camHeight = 480;
+    cropWidth = camWidth/2;
+    cropOffset = camWidth/4;
     lineCounter = 0;
     
     tmpR = 0;
@@ -42,6 +44,8 @@ void ofApp::setup() {
 	camera.setDesiredFrameRate(60);
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
+    
+    croppedCamera.allocate(camWidth, camHeight, OF_IMAGE_COLOR_ALPHA);
      
     // FBOs
     averageLines.allocate(camWidth, camHeight, GL_RGBA);
@@ -74,18 +78,33 @@ void ofApp::update() {
     camera.update();
     if (camera.isFrameNew()){
         
+        //croppedCamera.setFromPixels(camera.getPixelsRef());
+        //croppedCamera.resize(camWidth/2, camHeight);
+        
         pixels = camera.getPixels();
         int totalPixels = camWidth * camHeight;
         lineCounter = 0;
-        int tempCounter = 0;
+        bool startAdding = false;
         
         // Get Average Colours
         for (int i = 0; i < totalPixels; i++) {
+            
+            if(i % cropOffset == 0) {
+                startAdding = true;
+            }
+
+            if(i % (camWidth - cropOffset) == 0) {
+                startAdding = false;
+            }
+
+            //cout << ofToString(startAdding);
+            
             // Adding Colors
-            tmpR += pixels[i*3];
-            tmpG += pixels[i*3+1];
-            tmpB += pixels[i*3+2];
-            tempCounter++;
+            if(startAdding) {
+                tmpR += pixels[0+i*3];
+                tmpG += pixels[0+i*3+1];
+                tmpB += pixels[0+i*3+2];
+            }
             
             // Store Color
             if(i % camWidth == 0) {
@@ -166,6 +185,8 @@ void ofApp::draw() {
     // Raw Camera
     ofSetColor(255);
     camera.draw(0, 0, camWidth, camHeight);
+    //croppedCamera.draw(0, 0, camWidth, camHeight);
+    //croppedCamera.drawSubsection(0, 0, camWidth, camHeight, 0, 0, camWidth/2, camHeight);
     
     // Average Colour Lines
     ofSetColor(255);

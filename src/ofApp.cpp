@@ -47,7 +47,7 @@ void ofApp::setup() {
         }
     }
     
-	camera.setDeviceID(0);
+	camera.setDeviceID(4);
 	camera.setDesiredFrameRate(60);
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
@@ -115,9 +115,9 @@ void ofApp::update() {
                 
                 // Set Block Averages
                 if(lineCounter % 10 == 0) {
-                    //blockColors[lineCounter/10].r = tmpR;
-                    //blockColors[lineCounter/10].g = tmpG;
-                    //blockColors[lineCounter/10].b = tmpB;
+                    blockColors[lineCounter/10].r = tmpR;
+                    blockColors[lineCounter/10].g = tmpG;
+                    blockColors[lineCounter/10].b = tmpB;
                     
                     currentColorInt[0] = tmpR;
                     currentColorInt[1] = tmpG;
@@ -129,10 +129,10 @@ void ofApp::update() {
                     (currentColorInt[1] - lastColorInt[1]) < colorDifference ||
                     (currentColorInt[2] - lastColorInt[2]) < colorDifference ) {
                     
-                    cout << "NEW COLOR" << endl;
+                    //cout << "NEW COLOR" << endl;
                 }
                 else {
-                    cout << "OLD COLOR" << endl;
+                    //cout << "OLD COLOR" << endl;
                     //cout << "Line#" << lineCounter << endl;
                     //cout << lastColorInt[0] << "," << lastColorInt[1] << "," << lastColorInt[2] << endl;
                     //cout << "\n" << endl;
@@ -162,12 +162,10 @@ void ofApp::update() {
         averageLines.end();
         
         averageBlocks.begin();
-        /*
             for(int i = 0; i < camHeight/10; i++) {
                 ofSetColor(blockColors[i]);
                 ofRect(0, 0 + i*10, camWidth, 0 + i*10);
             }
-        */
         averageBlocks.end();
         
 	}
@@ -191,6 +189,7 @@ void ofApp::draw() {
     averageBlocks.draw(camWidth*2, 0, camWidth, camHeight);
     
     // Texture
+    /*
     unsigned char pixels[camWidth*camHeight*4];
     for (int i = 0; i < camWidth*camHeight*4; i++) {
         pixels[i] = (int)(255 * ofRandomuf());
@@ -200,12 +199,13 @@ void ofApp::draw() {
     ofSetColor(255, 255, 255);
     ofEnableAlphaBlending();
     tex.draw(0, camHeight);
-    
+     
     // Syphon
     mClient.draw(50, 50);
 	mainOutputSyphonServer.publishScreen();
     individualTextureSyphonServer.publishTexture(&tex);
-    
+    */
+     
     // Debug
     ofSetColor(0);
     char fpsStr[255];

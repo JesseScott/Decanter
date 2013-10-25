@@ -26,12 +26,15 @@ class ofApp : public ofBaseApp{
         ofVideoGrabber  camera;
         int camWidth, camHeight;
         unsigned char *pixels;
+        unsigned char *colorPixels;
         int cropWidth;
         int cropOffset;
         ofImage croppedCamera;
     
         // Syphon
         ofTexture tex;
+        ofFbo texFbo;
+        ofPixels pixelArray;
         ofxSyphonServer mainOutputSyphonServer;
         ofxSyphonServer individualTextureSyphonServer;
         ofxSyphonClient mClient;

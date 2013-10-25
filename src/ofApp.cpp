@@ -5,6 +5,7 @@
 void ofApp::setup() {
     
     // Screen
+    ofSetWindowTitle("beeeeeeeer");
     ofBackground(255);
     
     // Font
@@ -40,7 +41,7 @@ void ofApp::setup() {
         }
     }
     
-	camera.setDeviceID(4);
+	camera.setDeviceID(0);
 	camera.setDesiredFrameRate(60);
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
@@ -59,13 +60,15 @@ void ofApp::setup() {
     averageBlocks.end();
     
     // Syphon
-    ofSetWindowTitle("Decanter");
 	mainOutputSyphonServer.setName("Screen Output");
 	individualTextureSyphonServer.setName("Texture Output");
 	mClient.setup();
     mClient.set("","Simple Server");
 	
+
     tex.allocate(camWidth, camHeight, GL_RGBA);
+    pixelArray.allocate(camWidth, camHeight, OF_PIXELS_RGBA);
+    colorPixels = new unsigned char[640*480*4];
     
     cout << " -- END OF SETUP -- " << endl;
 }
@@ -115,6 +118,10 @@ void ofApp::update() {
                 lineColors[lineCounter].g = tmpG;
                 lineColors[lineCounter].b = tmpB;
                 
+                //colorPixels[i*3]   = lineColors[lineCounter].r;
+                //colorPixels[i*3+1] = lineColors[lineCounter].g;
+                //colorPixels[i*3+2] = lineColors[lineCounter].g;
+                
                 // Add Averages
                 tmpR += tmpR;
                 tmpG += tmpG;
@@ -158,9 +165,10 @@ void ofApp::update() {
         
         // Draw FBOs
         averageLines.begin();
+            ofClear(128, 128, 128, 255); // --->>> CALIBRATE
             for(int i = 0; i < camHeight; i++) {
                 ofSetColor(lineColors[i]);
-                ofLine(0, 0 + i, camWidth, 0 + i);
+                ofLine(0, i, camWidth, i);
             }
         averageLines.end();
         
@@ -170,6 +178,11 @@ void ofApp::update() {
                 ofRect(0, 0 + i*10, camWidth, 0 + i*10);
             }
         averageBlocks.end();
+     
+        // Texture For Syphon
+        averageLines.readToPixels(pixelArray);
+        colorPixels =  pixelArray.getPixels();
+        tex.loadData(colorPixels, 640, 480, GL_RGBA);
         
 	}
     
@@ -182,34 +195,26 @@ void ofApp::draw() {
     // Raw Camera
     ofSetColor(255);
     camera.draw(0, 0, camWidth, camHeight);
-    //croppedCamera.draw(0, 0, camWidth, camHeight);
-    //croppedCamera.drawSubsection(0, 0, camWidth, camHeight, 0, 0, camWidth/2, camHeight);
     
     // Average Colour Lines
     ofSetColor(255);
-    averageLines.draw(camWidth, 0, camWidth, camHeight);
+    //averageLines.draw(camWidth, 0, camWidth, camHeight);
 
     // Block Colour Lines
     ofSetColor(255);
     averageBlocks.draw(camWidth*2, 0, camWidth, camHeight);
     
     // Texture
-    /*
-    unsigned char pixels[camWidth*camHeight*4];
-    for (int i = 0; i < camWidth*camHeight*4; i++) {
-        pixels[i] = (int)(255 * ofRandomuf());
-    }
-    tex.loadData(pixels, camWidth, camHeight, GL_RGBA);
-    
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     ofSetColor(255, 255, 255);
-    ofEnableAlphaBlending();
-    tex.draw(0, camHeight);
+    //ofEnableAlphaBlending();
+    //tex.draw(camWidth, 0, camWidth, camHeight);
      
     // Syphon
-    mClient.draw(50, 50);
+    //mClient.draw(50, 50);
 	mainOutputSyphonServer.publishScreen();
     individualTextureSyphonServer.publishTexture(&tex);
-    */
      
     // Debug
     ofSetColor(0);

@@ -9,7 +9,8 @@ void ofApp::setup() {
     ofBackground(255);
     
     // Font
-    font.loadFont("font/Courier New Bold.ttf", 40);
+    mainFont.loadFont("font/Ostrich.ttf", 40);
+    subFont.loadFont("font/Ostrich.ttf", 25);
     
     // Misc
     verbose = false;
@@ -64,6 +65,11 @@ void ofApp::setup() {
     dataSet.begin();
         ofClear(255,255,255, 0);
     dataSet.end();
+    
+    interpretivePanel.allocate(camWidth, camHeight, GL_RGBA);
+    interpretivePanel.begin();
+        ofClear(255,255,255, 0);
+    interpretivePanel.end();
     
     drawAvgLines = true;
     
@@ -166,23 +172,36 @@ void ofApp::update() {
         
         dataSet.begin();
             ofClear(0, 0, 0, 5);
-            ofSetBackgroundColor(255);
+            ofSetBackgroundColor(0);
             for(int i = 0; i < camHeight; i++) {
                 if(i % 10 == 0) {
                     ofSetColor(lineColors[i].r, 0, 0);
                     char r = lineColors[i].r;
-                    font.drawString(ofToString(r), (i*2) + 15, lineCounter/5);
+                    mainFont.drawString(ofToString(r), (i*2) + 15, lineCounter/5);
                     
                     ofSetColor(0, lineColors[i].g, 0);
                     char g = lineColors[i].g;
-                    font.drawString(ofToString(g), (i*2) + 15, 150 + lineCounter/5);
+                    mainFont.drawString(ofToString(g), (i*2) + 15, 150 + lineCounter/5);
                     
                     ofSetColor(0, 0, lineColors[i].b);
                     char b = lineColors[i].b;
-                    font.drawString(ofToString(b), (i*2) + 15, 300 + lineCounter/5);
+                    mainFont.drawString(ofToString(b), (i*2) + 15, 300 + lineCounter/5);
                 }
             }
         dataSet.end();
+        
+        interpretivePanel.begin();
+            ofClear(0, 0, 0, 255);
+            ofSetBackgroundColor(0);
+        
+            ofSetColor(255);
+            string title = "DECANTER";
+            mainFont.drawString(title, camWidth/2 - 85, camHeight/2 - 50);
+        
+            ofSetColor(200);
+            string subtitle = "- a generative audio alcoholic experience -";
+            subFont.drawString(subtitle, camWidth/4 - 75, camHeight/2);
+        interpretivePanel.end();
      
         // Texture For Syphon
         if(drawAvgLines) {
@@ -202,26 +221,35 @@ void ofApp::update() {
 
 void ofApp::draw() {
     
-    ofSetColor(255);
-    
     // Raw Camera
+    ofSetColor(255);
     camera.draw(0, 0, cellWidth, cellHeight); // 0, 0  || TL
     
     // Average Colour Lines
+    ofSetColor(255);
     averageLines.draw(cellWidth, 0, cellWidth, cellHeight); // 0, 0    || TC
 
     // Sorted Colour Lines
+    ofSetColor(255);
     sortedLines.draw(cellWidth*2, 0, cellWidth, cellHeight); // 960, 0    || TR
     
     // Data Set
+    ofSetColor(255);
     dataSet.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360   || ML
+    
+    // Interpretive Text
+    ofSetColor(255);
+    interpretivePanel.draw(cellWidth, cellHeight, cellWidth, cellHeight); // 360, 360   || MC
     
     // Cropped Camera
     //croppedCamera.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360    || ML
     
     // Texture
     //tex.draw(cellWidth, cellHeight, cellWidth, cellHeight); // 480, 360    || MC
-     
+    
+    ofSetColor(255, 0, 0);
+    ofLine(ofGetWidth()/2, 0, ofGetWidth()/2, 720);
+    
     // Syphon
 	mainOutputSyphonServer.publishScreen();
     individualTextureSyphonServer.publishTexture(&tex);

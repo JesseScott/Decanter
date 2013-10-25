@@ -55,9 +55,10 @@ class ofApp : public ofBaseApp{
         ofFbo   averageLines;
         ofFbo   sortedLines;
         ofFbo   dataSet;
+        ofFbo   interpretivePanel;
     
         // Font
-        ofTrueTypeFont font;
+        ofTrueTypeFont mainFont, subFont;
     
         // Misc
         Boolean verbose;

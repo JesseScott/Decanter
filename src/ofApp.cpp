@@ -12,7 +12,7 @@ void ofApp::setup() {
     font.loadFont("font/Courier New Bold.ttf", 9);
     
     // Misc
-    verbose = true;
+    verbose = false;
     cellWidth  = 480;
     cellHeight = 360;
     
@@ -67,8 +67,10 @@ void ofApp::setup() {
 	mClient.setup();
     mClient.set("","Simple Server");
 	
+
     tex.allocate(camWidth, camHeight, GL_RGBA);
     pixelArray.allocate(camWidth, camHeight, OF_PIXELS_RGBA);
+    colorPixels = new unsigned char[640*480*4];
     
     cout << " -- END OF SETUP -- " << endl;
 }
@@ -88,6 +90,9 @@ void ofApp::update() {
         tmpCamera.setFromPixels(cameraPixels, camWidth, camHeight, OF_IMAGE_COLOR);
         croppedCamera.setFromPixels(tmpCamera);
         croppedCamera.crop(cropOffset, 0, camWidth - cropWidth, camHeight);
+        
+        // Set CameraPix from Cropped Image
+        cameraPixels = croppedCamera.getPixels();
         
         int totalPixels = camWidth * camHeight;
         lineCounter = 0;
@@ -219,10 +224,12 @@ void ofApp::draw() {
     individualTextureSyphonServer.publishTexture(&tex);
      
     // Debug
-    ofSetColor(0);
-    char fpsStr[255];
-    sprintf(fpsStr, "frame rate: %f", ofGetFrameRate());
-    ofDrawBitmapString(fpsStr, 50, ofGetWindowHeight() - 50);
+    if(verbose) {
+        ofSetColor(0);
+        char fpsStr[255];
+        sprintf(fpsStr, "frame rate: %f", ofGetFrameRate());
+        ofDrawBitmapString(fpsStr, 50, ofGetWindowHeight() - 50);
+    }
     
 }
 

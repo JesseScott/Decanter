@@ -27,7 +27,10 @@ class ofApp : public ofBaseApp{
         int camWidth, camHeight;
         unsigned char *cameraPixels;
         unsigned char *colorPixels;
+    
+        // Crop
         int cropWidth, cropOffset;
+        int nearBeer, farBeer;
         ofImage croppedCamera;
         ofPixels tmpCamera;
     
@@ -51,6 +54,7 @@ class ofApp : public ofBaseApp{
         // FBOs
         ofFbo   averageLines;
         ofFbo   sortedLines;
+        ofFbo   dataSet;
     
         // Font
         ofTrueTypeFont font;

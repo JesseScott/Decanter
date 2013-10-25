@@ -9,7 +9,7 @@ void ofApp::setup() {
     ofBackground(255);
     
     // Font
-    font.loadFont("font/Courier New Bold.ttf", 9);
+    font.loadFont("font/Courier New Bold.ttf", 40);
     
     // Misc
     verbose = false;
@@ -21,6 +21,8 @@ void ofApp::setup() {
     camHeight = 480;
     cropWidth = camWidth/2;
     cropOffset = camWidth/4;
+    nearBeer = 160;
+    farBeer = 320;
     lineCounter = 0;
     
     tmpR = 0;
@@ -40,7 +42,7 @@ void ofApp::setup() {
         }
     }
     
-	camera.setDeviceID(4);
+	camera.setDeviceID(0);
 	camera.setDesiredFrameRate(60);
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
@@ -57,6 +59,11 @@ void ofApp::setup() {
     sortedLines.begin();
         ofClear(255,255,255, 0);
     sortedLines.end();
+    
+    dataSet.allocate(camWidth, camHeight, GL_RGBA);
+    dataSet.begin();
+        ofClear(255,255,255, 0);
+    dataSet.end();
     
     drawAvgLines = true;
     
@@ -142,7 +149,7 @@ void ofApp::update() {
         
         // Draw FBOs
         averageLines.begin();
-            ofClear(128, 128, 128, 255); // --->>> CALIBRATE
+            ofClear(128, 128, 128, 255);
             for(int i = 0; i < camHeight; i++) {
                 ofSetColor(lineColors[i]);
                 ofLine(0, i, camWidth, i);
@@ -150,11 +157,32 @@ void ofApp::update() {
         averageLines.end();
         
         sortedLines.begin();
+            ofClear(128, 128, 128, 255);
             for(int i = 0; i < camHeight/10; i++) {
                 ofSetColor(blockColors[i]);
                 ofRect(0, -10 + i*10, camWidth, -10 + i*10);
             }
         sortedLines.end();
+        
+        dataSet.begin();
+            ofClear(0, 0, 0, 5);
+            ofSetBackgroundColor(255);
+            for(int i = 0; i < camHeight; i++) {
+                if(i % 10 == 0) {
+                    ofSetColor(lineColors[i].r, 0, 0);
+                    char r = lineColors[i].r;
+                    font.drawString(ofToString(r), (i*2) + 15, lineCounter/5);
+                    
+                    ofSetColor(0, lineColors[i].g, 0);
+                    char g = lineColors[i].g;
+                    font.drawString(ofToString(g), (i*2) + 15, 150 + lineCounter/5);
+                    
+                    ofSetColor(0, 0, lineColors[i].b);
+                    char b = lineColors[i].b;
+                    font.drawString(ofToString(b), (i*2) + 15, 300 + lineCounter/5);
+                }
+            }
+        dataSet.end();
      
         // Texture For Syphon
         if(drawAvgLines) {
@@ -174,24 +202,25 @@ void ofApp::update() {
 
 void ofApp::draw() {
     
-    // Raw Camera
     ofSetColor(255);
+    
+    // Raw Camera
     camera.draw(0, 0, cellWidth, cellHeight); // 0, 0  || TL
     
     // Average Colour Lines
-    ofSetColor(255);
     averageLines.draw(cellWidth, 0, cellWidth, cellHeight); // 0, 0    || TC
 
     // Sorted Colour Lines
-    ofSetColor(255);
     sortedLines.draw(cellWidth*2, 0, cellWidth, cellHeight); // 960, 0    || TR
     
+    // Data Set
+    dataSet.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360   || ML
+    
     // Cropped Camera
-    croppedCamera.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360    || ML
+    //croppedCamera.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360    || ML
     
     // Texture
-    ofSetColor(255, 255, 255);
-    tex.draw(cellWidth, cellHeight, cellWidth, cellHeight); // 480, 360    || MC
+    //tex.draw(cellWidth, cellHeight, cellWidth, cellHeight); // 480, 360    || MC
      
     // Syphon
 	mainOutputSyphonServer.publishScreen();

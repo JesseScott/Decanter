@@ -90,6 +90,7 @@ void ofApp::update() {
         tmpCamera.setFromPixels(cameraPixels, camWidth, camHeight, OF_IMAGE_COLOR);
         croppedCamera.setFromPixels(tmpCamera);
         croppedCamera.crop(cropOffset, 0, camWidth - cropWidth, camHeight);
+        croppedCamera.resize(camWidth, camHeight);
         
         // Set CameraPix from Cropped Image
         cameraPixels = croppedCamera.getPixels();
@@ -101,22 +102,10 @@ void ofApp::update() {
         // Get Average Colours
         for (int i = 0; i < totalPixels; i++) {
             
-            if(i % cropOffset == 0) {
-                startAdding = true;
-            }
-
-            if(i % (camWidth - cropOffset) == 0) {
-                startAdding = false;
-            }
-
-            //cout << ofToString(startAdding);
-            
             // Adding Colors
-            if(startAdding) {
-                tmpR += cameraPixels[i*3];
-                tmpG += cameraPixels[i*3+1];
-                tmpB += cameraPixels[i*3+2];
-            }
+            tmpR += cameraPixels[i*3];
+            tmpG += cameraPixels[i*3+1];
+            tmpB += cameraPixels[i*3+2];
             
             // Store Color
             if(i % camWidth == 0) {
@@ -183,7 +172,7 @@ void ofApp::update() {
         averageBlocks.begin();
             for(int i = 0; i < camHeight/10; i++) {
                 ofSetColor(blockColors[i]);
-                ofRect(0, 0 + i*10, camWidth, 0 + i*10);
+                ofRect(0, -10 + i*10, camWidth, -10 + i*10);
             }
         averageBlocks.end();
      

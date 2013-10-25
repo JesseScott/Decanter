@@ -204,16 +204,16 @@ void ofApp::draw() {
     ofSetColor(255);
     camera.draw(0, 0, cellWidth, cellHeight); // 0, 0  || TL
     
-    // Cropped Camera
-    croppedCamera.draw(cellWidth, 0, cellWidth, cellHeight); // 480, 0  || TC
-    
     // Average Colour Lines
     ofSetColor(255);
-    averageLines.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360    || ML
+    averageLines.draw(cellWidth, 0, cellWidth, cellHeight); // 0, 0    || TC
 
     // Block Colour Lines
     ofSetColor(255);
-    averageBlocks.draw(cellWidth*2, cellHeight, cellWidth, cellHeight); // 960, 360    || MR
+    averageBlocks.draw(cellWidth*2, 0, cellWidth, cellHeight); // 960, 0    || TR
+    
+    // Cropped Camera
+    croppedCamera.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360    || ML
     
     // Texture
     ofSetColor(255, 255, 255);

@@ -53,10 +53,12 @@ void ofApp::setup() {
         ofClear(255,255,255, 0);
     averageLines.end();
     
-    averageBlocks.allocate(camWidth, camHeight, GL_RGBA);
-    averageBlocks.begin();
+    sortedLines.allocate(camWidth, camHeight, GL_RGBA);
+    sortedLines.begin();
         ofClear(255,255,255, 0);
-    averageBlocks.end();
+    sortedLines.end();
+    
+    drawAvgLines = true;
     
     // Syphon
 	mainOutputSyphonServer.setName("Screen Output");
@@ -147,15 +149,20 @@ void ofApp::update() {
             }
         averageLines.end();
         
-        averageBlocks.begin();
+        sortedLines.begin();
             for(int i = 0; i < camHeight/10; i++) {
                 ofSetColor(blockColors[i]);
                 ofRect(0, -10 + i*10, camWidth, -10 + i*10);
             }
-        averageBlocks.end();
+        sortedLines.end();
      
         // Texture For Syphon
-        averageLines.readToPixels(pixelArray);
+        if(drawAvgLines) {
+            averageLines.readToPixels(pixelArray);
+        }
+        else {
+            sortedLines.readToPixels(pixelArray);
+        }
         colorPixels =  pixelArray.getPixels();
         tex.loadData(colorPixels, 640, 480, GL_RGBA);
         
@@ -175,9 +182,9 @@ void ofApp::draw() {
     ofSetColor(255);
     averageLines.draw(cellWidth, 0, cellWidth, cellHeight); // 0, 0    || TC
 
-    // Block Colour Lines
+    // Sorted Colour Lines
     ofSetColor(255);
-    averageBlocks.draw(cellWidth*2, 0, cellWidth, cellHeight); // 960, 0    || TR
+    sortedLines.draw(cellWidth*2, 0, cellWidth, cellHeight); // 960, 0    || TR
     
     // Cropped Camera
     croppedCamera.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360    || ML
@@ -218,6 +225,12 @@ void ofApp::keyPressed(int key){
 		//camera.videoSettings();
         ofSaveFrame();
 	}
+
+    // FBO -> Syphon
+    if (key == 'f' || key == 'F') {
+		drawAvgLines = !drawAvgLines;
+        cout << "DAL = " << ofToString(drawAvgLines) << endl;
+    }
     
 }
 

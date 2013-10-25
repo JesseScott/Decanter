@@ -38,6 +38,7 @@ class ofApp : public ofBaseApp{
         ofxSyphonServer mainOutputSyphonServer;
         ofxSyphonServer individualTextureSyphonServer;
         ofxSyphonClient mClient;
+        bool drawAvgLines;
     
         // Colour
         int tmpR;
@@ -49,7 +50,7 @@ class ofApp : public ofBaseApp{
     
         // FBOs
         ofFbo   averageLines;
-        ofFbo   averageBlocks;
+        ofFbo   sortedLines;
     
         // Font
         ofTrueTypeFont font;

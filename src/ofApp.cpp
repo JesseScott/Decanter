@@ -198,21 +198,17 @@ void ofApp::draw() {
     
     // Average Colour Lines
     ofSetColor(255);
-    //averageLines.draw(camWidth, 0, camWidth, camHeight);
+    averageLines.draw(camWidth, 0, camWidth, camHeight);
 
     // Block Colour Lines
     ofSetColor(255);
     averageBlocks.draw(camWidth*2, 0, camWidth, camHeight);
     
     // Texture
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     ofSetColor(255, 255, 255);
-    //ofEnableAlphaBlending();
     //tex.draw(camWidth, 0, camWidth, camHeight);
      
     // Syphon
-    //mClient.draw(50, 50);
 	mainOutputSyphonServer.publishScreen();
     individualTextureSyphonServer.publishTexture(&tex);
      

@@ -13,6 +13,8 @@ void ofApp::setup() {
     
     // Misc
     verbose = true;
+    cellWidth  = 480;
+    cellHeight = 320;
     
     // Camera
     camWidth = 640;
@@ -194,19 +196,21 @@ void ofApp::draw() {
     
     // Raw Camera
     ofSetColor(255);
-    camera.draw(0, 0, camWidth, camHeight);
+    camera.draw(0, 0, cellWidth, cellHeight);
+    
+    // Cropped Camera
     
     // Average Colour Lines
     ofSetColor(255);
-    averageLines.draw(camWidth, 0, camWidth, camHeight);
+    averageLines.draw(cellWidth, 0, cellWidth, cellHeight);
 
     // Block Colour Lines
     ofSetColor(255);
-    averageBlocks.draw(camWidth*2, 0, camWidth, camHeight);
+    averageBlocks.draw(cellWidth*2, 0, cellWidth, cellHeight);
     
     // Texture
     ofSetColor(255, 255, 255);
-    //tex.draw(camWidth, 0, camWidth, camHeight);
+    //tex.draw(camWidth, 0, cellWidth, cellHeight);
      
     // Syphon
 	mainOutputSyphonServer.publishScreen();

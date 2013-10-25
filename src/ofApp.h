@@ -60,6 +60,7 @@ class ofApp : public ofBaseApp{
     
         // Misc
         Boolean verbose;
+        int cellWidth, cellHeight;
     
     
 };

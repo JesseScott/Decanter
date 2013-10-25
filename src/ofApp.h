@@ -28,9 +28,7 @@ class ofApp : public ofBaseApp{
         ofVideoGrabber  camera;
         int camWidth, camHeight;
         unsigned char *cameraPixels;
-        unsigned char *colorPixels;
-        int cropWidth;
-        int cropOffset;
+        int cropWidth, cropOffset;
         ofImage croppedCamera;
         ofPixels tmpCamera;
     

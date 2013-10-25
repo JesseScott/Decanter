@@ -67,10 +67,8 @@ void ofApp::setup() {
 	mClient.setup();
     mClient.set("","Simple Server");
 	
-
     tex.allocate(camWidth, camHeight, GL_RGBA);
     pixelArray.allocate(camWidth, camHeight, OF_PIXELS_RGBA);
-    colorPixels = new unsigned char[640*480*4];
     
     cout << " -- END OF SETUP -- " << endl;
 }
@@ -83,6 +81,7 @@ void ofApp::update() {
     camera.update();
     if (camera.isFrameNew()){
         
+        // Get Camera Pixels
         cameraPixels = camera.getPixels();
         
         // Pull Cam Pix & Crop
@@ -125,10 +124,6 @@ void ofApp::update() {
                 lineColors[lineCounter].r = tmpR;
                 lineColors[lineCounter].g = tmpG;
                 lineColors[lineCounter].b = tmpB;
-                
-                //colorPixels[i*3]   = lineColors[lineCounter].r;
-                //colorPixels[i*3+1] = lineColors[lineCounter].g;
-                //colorPixels[i*3+2] = lineColors[lineCounter].g;
                 
                 // Add Averages
                 tmpR += tmpR;

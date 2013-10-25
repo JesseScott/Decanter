@@ -46,10 +46,6 @@ class ofApp : public ofBaseApp{
         int lineCounter;
         ofColor lineColors[480];
         ofColor blockColors[48];
-        ofColor tempColor, currentColor, lastColor;
-        int currentColorInt[3];
-        int lastColorInt[3];
-        int colorDifference;
     
         // FBOs
         ofFbo   averageLines;

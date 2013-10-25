@@ -26,9 +26,6 @@ void ofApp::setup() {
     tmpR = 0;
     tmpG = 0;
     tmpB = 0;
-    colorDifference = 25;
-    currentColorInt[0] = 0; currentColorInt[1] = 0; currentColorInt[2] = 0;
-    lastColorInt[0] = 0; lastColorInt[1] = 0; lastColorInt[2] = 0;    
     
     vector<ofVideoDevice> devices = camera.listDevices();
     if(verbose) {
@@ -129,26 +126,7 @@ void ofApp::update() {
                     blockColors[lineCounter/10].r = tmpR;
                     blockColors[lineCounter/10].g = tmpG;
                     blockColors[lineCounter/10].b = tmpB;
-                    
-                    currentColorInt[0] = tmpR;
-                    currentColorInt[1] = tmpG;
-                    currentColorInt[2] = tmpB;
                 }
-                 
-                // Test Colour Difference
-                if( (currentColorInt[0] - lastColorInt[0]) < colorDifference ||
-                    (currentColorInt[1] - lastColorInt[1]) < colorDifference ||
-                    (currentColorInt[2] - lastColorInt[2]) < colorDifference ) {
-                    
-                }
-                else {
-                
-                }
-                
-                // Store Last Color
-                lastColorInt[0] = currentColorInt[0];
-                lastColorInt[1] = currentColorInt[1];
-                lastColorInt[2] = currentColorInt[2];
                 
                 // Reset Temp Colors
                 tmpR = 0;

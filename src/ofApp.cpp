@@ -14,7 +14,7 @@ void ofApp::setup() {
     // Misc
     verbose = true;
     cellWidth  = 480;
-    cellHeight = 320;
+    cellHeight = 360;
     
     // Camera
     camWidth = 640;
@@ -48,7 +48,7 @@ void ofApp::setup() {
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
     
-    croppedCamera.allocate(camWidth, camHeight, OF_IMAGE_COLOR_ALPHA);
+    croppedCamera.allocate(cropWidth, camHeight, OF_IMAGE_COLOR_ALPHA);
      
     // FBOs
     averageLines.allocate(camWidth, camHeight, GL_RGBA);
@@ -83,7 +83,13 @@ void ofApp::update() {
     camera.update();
     if (camera.isFrameNew()){
         
-        pixels = camera.getPixels();
+        cameraPixels = camera.getPixels();
+        
+        // Pull Cam Pix & Crop
+        tmpCamera.setFromPixels(cameraPixels, camWidth, camHeight, OF_IMAGE_COLOR);
+        croppedCamera.setFromPixels(tmpCamera);
+        croppedCamera.crop(cropOffset, 0, camWidth - cropWidth, camHeight);
+        
         int totalPixels = camWidth * camHeight;
         lineCounter = 0;
         bool startAdding = false;
@@ -103,9 +109,9 @@ void ofApp::update() {
             
             // Adding Colors
             if(startAdding) {
-                tmpR += pixels[i*3];
-                tmpG += pixels[i*3+1];
-                tmpB += pixels[i*3+2];
+                tmpR += cameraPixels[i*3];
+                tmpG += cameraPixels[i*3+1];
+                tmpB += cameraPixels[i*3+2];
             }
             
             // Store Color
@@ -196,21 +202,22 @@ void ofApp::draw() {
     
     // Raw Camera
     ofSetColor(255);
-    camera.draw(0, 0, cellWidth, cellHeight);
+    camera.draw(0, 0, cellWidth, cellHeight); // 0, 0  || TL
     
     // Cropped Camera
+    croppedCamera.draw(cellWidth, 0, cellWidth, cellHeight); // 480, 0  || TC
     
     // Average Colour Lines
     ofSetColor(255);
-    averageLines.draw(cellWidth, 0, cellWidth, cellHeight);
+    averageLines.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360    || ML
 
     // Block Colour Lines
     ofSetColor(255);
-    averageBlocks.draw(cellWidth*2, 0, cellWidth, cellHeight);
+    averageBlocks.draw(cellWidth*2, cellHeight, cellWidth, cellHeight); // 960, 360    || MR
     
     // Texture
     ofSetColor(255, 255, 255);
-    //tex.draw(camWidth, 0, cellWidth, cellHeight);
+    tex.draw(cellWidth, cellHeight, cellWidth, cellHeight); // 480, 360    || MC
      
     // Syphon
 	mainOutputSyphonServer.publishScreen();
@@ -231,6 +238,34 @@ void ofApp::exit() {
     
     // Close Camera
     camera.close();
+}
+
+//--------------------------------------------------------------
+
+ofImage ofApp::crop(ofImage* sImg, int x, int y, int w, int h){
+    
+    int sW = sImg->getWidth();
+    int sH = sImg->getHeight();
+    
+    ofImage tmpImg;
+    tmpImg.allocate(w, h, OF_IMAGE_COLOR);
+    
+    unsigned char subRegion[ w * h * 3  ];
+    unsigned char * srcPixels = sImg->getPixels();
+    
+    for (int i = 0; i < w; i++){
+        for (int j = 0; j < h; j++){
+            int mainPixelPos = ((j + y) * sW + (i + x)) * 3;
+            int subPixlPos = (j * w + i) * 3;
+            
+            subRegion[subPixlPos] = srcPixels[mainPixelPos];   // R
+            subRegion[subPixlPos + 1] = srcPixels[mainPixelPos + 1];  // G
+            subRegion[subPixlPos + 2] = srcPixels[mainPixelPos + 2];  // B
+        }
+    }
+    
+    tmpImg.setFromPixels(subRegion, w, h,  OF_IMAGE_COLOR);
+    return tmpImg;
 }
 
 

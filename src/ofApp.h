@@ -22,14 +22,17 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
+        ofImage crop(ofImage* sImg, int x, int y, int w, int h);
+    
         // Camera
         ofVideoGrabber  camera;
         int camWidth, camHeight;
-        unsigned char *pixels;
+        unsigned char *cameraPixels;
         unsigned char *colorPixels;
         int cropWidth;
         int cropOffset;
         ofImage croppedCamera;
+        ofPixels tmpCamera;
     
         // Syphon
         ofTexture tex;

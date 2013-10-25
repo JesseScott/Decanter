@@ -21,9 +21,7 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-    
-        ofImage crop(ofImage* sImg, int x, int y, int w, int h);
-    
+        
         // Camera
         ofVideoGrabber  camera;
         int camWidth, camHeight;

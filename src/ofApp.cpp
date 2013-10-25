@@ -244,35 +244,6 @@ void ofApp::exit() {
 
 //--------------------------------------------------------------
 
-ofImage ofApp::crop(ofImage* sImg, int x, int y, int w, int h){
-    
-    int sW = sImg->getWidth();
-    int sH = sImg->getHeight();
-    
-    ofImage tmpImg;
-    tmpImg.allocate(w, h, OF_IMAGE_COLOR);
-    
-    unsigned char subRegion[ w * h * 3  ];
-    unsigned char * srcPixels = sImg->getPixels();
-    
-    for (int i = 0; i < w; i++){
-        for (int j = 0; j < h; j++){
-            int mainPixelPos = ((j + y) * sW + (i + x)) * 3;
-            int subPixlPos = (j * w + i) * 3;
-            
-            subRegion[subPixlPos] = srcPixels[mainPixelPos];   // R
-            subRegion[subPixlPos + 1] = srcPixels[mainPixelPos + 1];  // G
-            subRegion[subPixlPos + 2] = srcPixels[mainPixelPos + 2];  // B
-        }
-    }
-    
-    tmpImg.setFromPixels(subRegion, w, h,  OF_IMAGE_COLOR);
-    return tmpImg;
-}
-
-
-//--------------------------------------------------------------
-
 void ofApp::keyPressed(int key){
     
     // Camera Settings

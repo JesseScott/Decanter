@@ -40,7 +40,7 @@ void ofApp::setup() {
         }
     }
     
-	camera.setDeviceID(0);
+	camera.setDeviceID(4);
 	camera.setDesiredFrameRate(60);
     camera.setVerbose(true);
     camera.initGrabber(camWidth, camHeight);
@@ -222,8 +222,8 @@ void ofApp::keyPressed(int key){
     
     // Camera Settings
     if (key == 's' || key == 'S') {
-		//camera.videoSettings();
-        ofSaveFrame();
+		camera.videoSettings();
+        //ofSaveFrame();
 	}
 
     // FBO -> Syphon

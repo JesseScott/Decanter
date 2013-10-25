@@ -49,6 +49,18 @@ void ofApp::setup() {
     camera.initGrabber(camWidth, camHeight);
     
     croppedCamera.allocate(cropWidth, camHeight, OF_IMAGE_COLOR_ALPHA);
+    
+    // Audio
+    int bufferSize = 256;
+	left.assign(bufferSize, 0.0);
+	right.assign(bufferSize, 0.0);
+	volHistory.assign(camWidth, 0.0);
+	bufferCounter	= 0;
+	drawCounter		= 0;
+	smoothedVol     = 0.0;
+	scaledVol		= 0.0;
+	soundStream.setup(this, 0, 2, 44100, bufferSize, 4);
+    soundStream.start();
      
     // FBOs
     averageLines.allocate(camWidth, camHeight, GL_RGBA);
@@ -70,6 +82,11 @@ void ofApp::setup() {
     interpretivePanel.begin();
         ofClear(255,255,255, 0);
     interpretivePanel.end();
+    
+    audioFbo.allocate(camWidth, camHeight, GL_RGBA);
+    audioFbo.begin();
+        ofClear(255,255,255, 0);
+    audioFbo.end();
     
     drawAvgLines = true;
     
@@ -153,6 +170,13 @@ void ofApp::update() {
             }
         }
         
+        // Audio
+        scaledVol = ofMap(smoothedVol, 0.0, 0.17, 0.0, 1.0, true);
+        volHistory.push_back( scaledVol );
+        if( volHistory.size() >= 400 ){
+            volHistory.erase(volHistory.begin(), volHistory.begin()+1);
+        }
+        
         // Draw FBOs
         averageLines.begin();
             ofClear(128, 128, 128, 255);
@@ -202,6 +226,33 @@ void ofApp::update() {
             string subtitle = "- a generative audio alcoholic experience -";
             subFont.drawString(subtitle, camWidth/4 - 75, camHeight/2);
         interpretivePanel.end();
+        
+        audioFbo.begin();
+            ofClear(0, 0, 0, 255);
+            ofSetLineWidth(3);
+            ofSetColor(245, 58, 135);
+        
+            ofBeginShape();
+                for (unsigned int i = 0; i < left.size(); i++){
+                    ofVertex(i*3, 100 -left[i]*180.0f);
+                }
+            ofEndShape(false);
+
+            ofBeginShape();
+                for (unsigned int i = 0; i < right.size(); i++){
+                    ofVertex(i*3, 200 -right[i]*180.0f);
+                }
+            ofEndShape(false);
+        
+            ofBeginShape();
+            for (unsigned int i = 0; i < volHistory.size(); i++){
+                if( i == 0 ) ofVertex(i, camHeight);
+                ofVertex(i, camHeight - volHistory[i] * 150);
+                if( i == volHistory.size() -1 ) ofVertex(i, camHeight);
+            }
+            ofEndShape(false);
+        
+        audioFbo.end();
      
         // Texture For Syphon
         if(drawAvgLines) {
@@ -241,14 +292,17 @@ void ofApp::draw() {
     ofSetColor(255);
     interpretivePanel.draw(cellWidth, cellHeight, cellWidth, cellHeight); // 360, 360   || MC
     
+    // Audio Waverform
+    audioFbo.draw(cellWidth*2, cellHeight, cellWidth, cellHeight);
+    
     // Cropped Camera
     //croppedCamera.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360    || ML
     
     // Texture
     //tex.draw(cellWidth, cellHeight, cellWidth, cellHeight); // 480, 360    || MC
     
-    ofSetColor(255, 0, 0);
-    ofLine(ofGetWidth()/2, 0, ofGetWidth()/2, 720);
+//    ofSetColor(255, 0, 0);
+//    ofLine(ofGetWidth()/2, 0, ofGetWidth()/2, 720);
     
     // Syphon
 	mainOutputSyphonServer.publishScreen();
@@ -262,6 +316,31 @@ void ofApp::draw() {
         ofDrawBitmapString(fpsStr, 50, ofGetWindowHeight() - 50);
     }
     
+}
+
+//--------------------------------------------------------------
+void ofApp::audioIn(float * input, int bufferSize, int nChannels){
+
+	float curVol = 0.0;
+	int numCounted = 0;
+    
+	for (int i = 0; i < bufferSize; i++){
+		left[i]		= input[i*2]*0.5;
+		right[i]	= input[i*2+1]*0.5;
+        
+		curVol += left[i] * left[i];
+		curVol += right[i] * right[i];
+		numCounted+=2;
+	}
+	
+	curVol /= (float)numCounted;
+	curVol = sqrt( curVol );
+	
+	smoothedVol *= 0.93;
+	smoothedVol += 0.07 * curVol;
+	
+	bufferCounter++;
+	
 }
 
 //--------------------------------------------------------------

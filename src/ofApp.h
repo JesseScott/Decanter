@@ -34,6 +34,17 @@ class ofApp : public ofBaseApp{
         ofImage croppedCamera;
         ofPixels tmpCamera;
     
+        // Audio
+        void audioIn(float * input, int bufferSize, int nChannels);
+        vector <float> left;
+        vector <float> right;
+        vector <float> volHistory;
+        int 	bufferCounter;
+        int 	drawCounter;
+        float smoothedVol;
+        float scaledVol;
+        ofSoundStream soundStream;
+    
         // Syphon
         ofTexture tex;
         ofFbo texFbo;
@@ -56,6 +67,7 @@ class ofApp : public ofBaseApp{
         ofFbo   sortedLines;
         ofFbo   dataSet;
         ofFbo   interpretivePanel;
+        ofFbo   audioFbo;
     
         // Font
         ofTrueTypeFont mainFont, subFont;

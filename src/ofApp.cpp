@@ -350,6 +350,9 @@ void ofApp::exit() {
     
     // Close Camera
     camera.close();
+    
+    // Close Audio
+    soundStream.stop();
 }
 
 //--------------------------------------------------------------

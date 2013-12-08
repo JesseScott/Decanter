@@ -20,10 +20,11 @@ void ofApp::setup() {
     // Camera
     camWidth = 640;
     camHeight = 480;
-    cropWidth = camWidth/2;
-    cropOffset = camWidth/4;
+
     nearBeer = 160;
     farBeer = 320;
+    cropWidth = camWidth/2;
+    cropOffset = nearBeer;
     lineCounter = 0;
     
     tmpR = 0;
@@ -286,7 +287,7 @@ void ofApp::draw() {
     
     // Data Set
     ofSetColor(255);
-    dataSet.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360   || ML
+    //dataSet.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360   || ML
     
     // Interpretive Text
     ofSetColor(255);
@@ -296,7 +297,7 @@ void ofApp::draw() {
     audioFbo.draw(cellWidth*2, cellHeight, cellWidth, cellHeight);
     
     // Cropped Camera
-    //croppedCamera.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360    || ML
+    croppedCamera.draw(0, cellHeight, cellWidth, cellHeight); // 0, 360    || ML
     
     // Texture
     //tex.draw(cellWidth, cellHeight, cellWidth, cellHeight); // 480, 360    || MC
